@@ -9,13 +9,14 @@ import { BASE_URL } from "../utils/constants";
 const Home = () => {
     const [email, setEmail] = useState("ellyse@gmail.com");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
             const resultData = await axios.post(
-                BASE_URL+ "/login",
+                BASE_URL + "/login",
                 {
                     email,
                     password,
@@ -25,7 +26,8 @@ const Home = () => {
             dispatch(addUser(resultData.data));
             navigate("/");
         } catch (error) {
-            console.error("Login failed:", error);
+            setError(error?.response?.data?.details || "Login failed");
+            console.log("Login error:", error);
         }
     };
 
@@ -62,6 +64,7 @@ const Home = () => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
+                    <p className="text-error font-bold">{error}</p>
 
                     <div className="card-actions justify-center mt-4">
                         <button
