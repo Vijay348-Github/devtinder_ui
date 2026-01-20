@@ -18,7 +18,7 @@ const NavBar = () => {
             dispatch(clearUser());
             navigate("/login");
         } catch (error) {
-            alert("Error logging out. Please try again.");
+            alert("Error logging out. Please try again. " + error.message);
         }
     }
 

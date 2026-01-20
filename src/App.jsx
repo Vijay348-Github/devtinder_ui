@@ -3,8 +3,8 @@ import Body from "./components/Body";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import { Provider } from "react-redux";
-import store from "./utils/store.jsx";
-import Feed from "./components/Feed.jsx";
+import store from "./utils/store.js";
+import Feed from "./components/Feed";
 
 function App() {
     return (
