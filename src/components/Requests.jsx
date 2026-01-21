@@ -5,10 +5,29 @@ import { useDispatch } from "react-redux";
 import { setRequests } from "../utils/requestSlice";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { clearRequest } from "../utils/requestSlice";
 
 const Requests = () => {
     const dispatch = useDispatch();
     const requests = useSelector((store) => store.requests);
+
+    const reviewRequest = async (status, requestId) => {
+        try {
+            const res = await axios.post(
+                BASE_URL + "/request/review/" + status + "/" + requestId,
+                {},
+                {
+                    withCredentials: true,
+                },
+            );
+            dispatch(clearRequest(requestId));
+        } catch (error) {
+            alert(
+                "Error reviewing request. Please try again. " + error.message,
+            );
+        }
+    };
+
     const fetchRequests = async () => {
         try {
             const res = await axios.get(BASE_URL + "/user/requests/received", {
@@ -28,7 +47,7 @@ const Requests = () => {
     if (!requests || requests.length === 0) {
         return (
             <div className="flex justify-center min-h-screen my-6">
-                <h1 className="text-4xl font-bold drop-shadow-md">
+                <h1 className="text-3xl font-semibold text-gray-500">
                     No Connection Requests Found
                 </h1>
             </div>
@@ -59,7 +78,7 @@ const Requests = () => {
                             key={_id}
                             className="w-80 bg-base-200 rounded-3xl shadow-xl overflow-hidden hover:scale-105 transition-transform duration-300"
                         >
-                            <div className="relative h-96">
+                            <div className="relative h-80">
                                 <img
                                     src={photo}
                                     alt={firstName}
@@ -87,16 +106,26 @@ const Requests = () => {
                             </div>
 
                             <div className="p-4 text-center">
-                                <p className="text-sm text-gray-500 italic line-clamp-3">
+                                <p className="text-sm text-gray-600 italic line-clamp-3">
                                     {about || "No bio available"}
                                 </p>
                             </div>
 
                             <div className="card-actions justify-around p-4 justify-center">
-                                <button className="btn btn-primary">
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={() =>
+                                        reviewRequest("accepted", request._id)
+                                    }
+                                >
                                     ❤️ Accept
                                 </button>
-                                <button className="btn btn-outline btn-error">
+                                <button
+                                    className="btn btn-outline btn-error"
+                                    onClick={() =>
+                                        reviewRequest("rejected", request._id)
+                                    }
+                                >
                                     ❌ Reject
                                 </button>
                             </div>
