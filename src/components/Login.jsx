@@ -27,7 +27,6 @@ const Home = () => {
             navigate("/");
         } catch (error) {
             setError(error?.response?.data?.details || "Login failed");
-            console.log("Login error:", error);
         }
     };
 

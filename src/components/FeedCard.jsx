@@ -5,7 +5,7 @@ const FeedCard = ({ user }) => {
     const { firstName, lastName, age, gender, about, photo } = user;
     return (
         <div className="flex justify-center mt-10">
-            <div className="card bg-base-300 w-96 shadow-sm">
+            <div className="card bg-sky-50 border border-sky-300 w-96 shadow-lg r">
                 <figure className="h-72 overflow-hidden rounded-xl mx-6 mt-6">
                     <img
                         src={photo}
