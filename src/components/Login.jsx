@@ -6,35 +6,47 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 
 const Home = () => {
-    const [email, setEmail] = useState("ellyse@gmail.com");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [showToast, setShowToast] = useState(false);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setError("");
+
         try {
             const resultData = await axios.post(
-                BASE_URL + "/login",
+                `${BASE_URL}/login`,
                 { email, password },
-                { withCredentials: true },
+                { withCredentials: true }
             );
+
             dispatch(addUser(resultData.data));
             setShowToast(true);
+
             setTimeout(() => {
                 setShowToast(false);
                 navigate("/");
             }, 1500);
         } catch (error) {
-            setError(error?.response?.data?.details || "Login failed");
+            setError(
+                error?.response?.data?.details ||
+                error?.response?.data ||
+                "Login failed"
+            );
         }
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
             <div className="card w-96 bg-base-100 shadow-2xl rounded-2xl">
-                <div className="card-body">
+                
+                {/* FORM */}
+                <form className="card-body" onSubmit={handleLogin}>
                     <h2 className="text-3xl font-extrabold text-center mb-2">
                         Welcome Back 👋
                     </h2>
@@ -42,6 +54,7 @@ const Home = () => {
                         Login to continue
                     </p>
 
+                    {/* EMAIL */}
                     <div className="form-control mb-4">
                         <label className="label">
                             <span className="label-text font-semibold">
@@ -50,12 +63,15 @@ const Home = () => {
                         </label>
                         <input
                             type="email"
+                            autoComplete="email"
+                            required
                             className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-primary"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
 
+                    {/* PASSWORD */}
                     <div className="form-control mb-2">
                         <label className="label">
                             <span className="label-text font-semibold">
@@ -64,27 +80,32 @@ const Home = () => {
                         </label>
                         <input
                             type="password"
+                            autoComplete="current-password"
+                            required
                             className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-primary"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
 
+                    {/* ERROR */}
                     {error && (
                         <p className="text-error text-sm mt-2 text-center">
                             {error}
                         </p>
                     )}
 
+                    {/* SUBMIT */}
                     <div className="mt-6">
                         <button
+                            type="submit"
                             className="btn btn-primary w-full text-lg tracking-wide"
-                            onClick={handleLogin}
                         >
                             Login
                         </button>
                     </div>
 
+                    {/* NAVIGATION */}
                     <p className="text-center text-sm mt-4">
                         New here?{" "}
                         <span
@@ -94,8 +115,10 @@ const Home = () => {
                             Create an account
                         </span>
                     </p>
-                </div>
+                </form>
             </div>
+
+            {/* TOAST */}
             {showToast && (
                 <div className="toast toast-top toast-center z-50">
                     <div className="alert alert-success shadow-lg">

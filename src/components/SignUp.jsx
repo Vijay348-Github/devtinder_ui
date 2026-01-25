@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -14,11 +16,12 @@ const Signup = () => {
     const [about, setAbout] = useState("");
     const [age, setAge] = useState("");
     const [error, setError] = useState("");
+    const dispatch = useDispatch();
 
     const handleSignup = async () => {
         try {
             setError("");
-            await axios.post(
+            const res = await axios.post(
                 BASE_URL + "/signup",
                 {
                     firstName,
@@ -31,7 +34,8 @@ const Signup = () => {
                 },
                 { withCredentials: true },
             );
-            navigate("/login");
+            dispatch(addUser(res.data));
+            navigate("/profile");
         } catch (err) {
             setError(
                 err?.response?.data?.details ||
