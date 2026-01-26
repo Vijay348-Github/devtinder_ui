@@ -156,6 +156,7 @@ const ProfileEdit = ({ user }) => {
 
             <FeedCard
                 user={{ firstName, lastName, age, gender, about, photo }}
+                showActions={false}
             />
 
             {showToast && (
