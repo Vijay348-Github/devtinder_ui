@@ -5,10 +5,12 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setConnections } from "../utils/connectionSlice";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Connections = () => {
     const dispatch = useDispatch();
     const connections = useSelector((store) => store.connections);
+    const navigate = useNavigate();
     const getConnections = async () => {
         try {
             const res = await axios.get(BASE_URL + "/user/connections", {
@@ -58,7 +60,7 @@ const Connections = () => {
                     return (
                         <div
                             key={_id}
-                            className="w-80 bg-base-200 rounded-3xl shadow-xl overflow-hidden hover:scale-105 transition-transform duration-300"
+                            className="group w-80 bg-base-200 rounded-3xl shadow-xl overflow-hidden transition-transform duration-300 hover:scale-105 flex flex-col"
                         >
                             <div className="relative h-96">
                                 <img
@@ -67,9 +69,9 @@ const Connections = () => {
                                     className="w-full h-full object-cover"
                                 />
 
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent pointer-events-none"></div>
 
-                                <div className="absolute bottom-4 left-4 text-white">
+                                <div className="absolute bottom-16 left-4 text-white z-10">
                                     <h2 className="text-2xl font-bold">
                                         {firstName} {lastName}
                                         {age && (
@@ -78,17 +80,35 @@ const Connections = () => {
                                             </span>
                                         )}
                                     </h2>
-
                                     {gender && (
                                         <p className="text-sm capitalize opacity-80">
                                             {gender}
                                         </p>
                                     )}
                                 </div>
+
+                                <div
+                                    className="absolute bottom-4 left-0 right-0 flex justify-center
+                 opacity-0 translate-y-2
+                 group-hover:opacity-100 group-hover:translate-y-0
+                 transition-all duration-300 z-20"
+                                >
+                                    <button
+                                        onClick={() => navigate(`/chat/${_id}`)}
+                                        className="btn btn-primary rounded-full px-8 shadow-lg"
+                                    >
+                                        💬 Chat
+                                    </button>
+                                </div>
                             </div>
 
-                            <div className="p-4 text-center">
-                                <p className="text-sm text-gray-500 italic line-clamp-3">
+                            <div className="p-4 text-center group/bio">
+                                <p
+                                    className="text-sm text-gray-500 italic
+               line-clamp-3
+               group-hover/bio:line-clamp-none
+               transition-all duration-300"
+                                >
                                     {about || "No bio available"}
                                 </p>
                             </div>
