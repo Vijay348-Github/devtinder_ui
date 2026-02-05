@@ -12,12 +12,12 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
     const [receiver, setReceiver] = useState(null);
-    const [isReceiverOnline, setIsReceiverOnline] = useState(false); // ✅ Online status
-    const [isTyping, setIsTyping] = useState(false); // ✅ Typing indicator
+    const [isReceiverOnline, setIsReceiverOnline] = useState(false); // Online status
+    const [isTyping, setIsTyping] = useState(false); // Typing indicator
 
     const socketRef = useRef(null);
     const messagesEndRef = useRef(null);
-    const typingTimeoutRef = useRef(null); // ✅ Debounce timeout for typing
+    const typingTimeoutRef = useRef(null); // Debounce timeout for typing
 
     const user = useSelector((store) => store.user);
     const userId = user?._id;
@@ -25,7 +25,7 @@ const Chat = () => {
     /* -------------------- AUTO SCROLL -------------------- */
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages, isTyping]); // ✅ also scroll when typing indicator appears
+    }, [messages, isTyping]); // also scroll when typing indicator appears
 
     /* -------------------- SOCKET (CREATE ONCE PER USER) -------------------- */
     useEffect(() => {
@@ -34,7 +34,7 @@ const Chat = () => {
         const socket = socketConnection(userId);
         socketRef.current = socket;
 
-        // ✅ RECEIVE MESSAGE
+        // RECEIVE MESSAGE
         const handleReceiveMessage = (msg) => {
             setMessages((prev) => {
                 const filtered = prev.filter(
@@ -54,7 +54,7 @@ const Chat = () => {
             });
         };
 
-        // ✅ ONLINE STATUS HANDLERS
+        // ONLINE STATUS HANDLERS
         const handleUserOnline = ({ userId: onlineUserId }) => {
             if (onlineUserId === messagetoid) {
                 setIsReceiverOnline(true);
@@ -67,14 +67,14 @@ const Chat = () => {
             }
         };
 
-        // ✅ Fired when you join a room — tells you current status of the other user
+        // Fired when you join a room — tells you current status of the other user
         const handleOnlineStatus = ({ userId: statusUserId, isOnline }) => {
             if (statusUserId === messagetoid) {
                 setIsReceiverOnline(isOnline);
             }
         };
 
-        // ✅ TYPING INDICATOR HANDLERS
+        // TYPING INDICATOR HANDLERS
         const handleTyping = ({ userId: typingUserId }) => {
             if (typingUserId === messagetoid) {
                 setIsTyping(true);
@@ -87,7 +87,7 @@ const Chat = () => {
             }
         };
 
-        // ✅ ERROR HANDLER
+        // ERROR HANDLER
         const handleError = ({ message }) => {
             console.error("Socket error:", message);
         };
