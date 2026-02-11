@@ -12,7 +12,7 @@ const FeedCard = ({ user, showActions = true }) => {
             await axios.post(
                 BASE_URL + "/send/request/" + status + "/" + requestId,
                 {},
-                { withCredentials: true }
+                { withCredentials: true },
             );
             dispatch(removeUserFromFeed(requestId));
         } catch (error) {
@@ -25,41 +25,46 @@ const FeedCard = ({ user, showActions = true }) => {
     const { _id, firstName, lastName, age, gender, about, photo } = user;
 
     return (
-        <div className="flex justify-center mt-10">
-            <div className="card bg-sky-50 border border-sky-300 w-96 shadow-lg">
-                <figure className="h-72 overflow-hidden rounded-xl mx-6 mt-6">
+        <div className="flex justify-center">
+            <div className="card w-[420px] bg-base-100 shadow-2xl border border-base-200 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
+                {/* Image */}
+                <figure className="h-80 overflow-hidden">
                     <img
                         src={photo}
                         alt="Photo"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                     />
                 </figure>
 
-                <div className="card-body items-center text-center">
-                    <h2 className="card-title text-xl">
+                {/* Content */}
+                <div className="card-body items-center text-center px-8 py-6">
+                    <h2 className="text-2xl font-bold tracking-tight">
                         {firstName} {lastName}
                     </h2>
 
                     {age && gender && (
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500 font-medium">
                             {age} · {gender}
                         </p>
                     )}
 
-                    <p className="text-gray-700">{about}</p>
+                    <p className="text-gray-600 mt-2 leading-relaxed">
+                        {about}
+                    </p>
 
                     {showActions && (
-                        <div className="card-actions">
+                        <div className="card-actions justify-center gap-6 mt-6">
                             <button
-                                className="btn btn-outline btn-error"
+                                className="btn btn-outline btn-error rounded-full px-8 hover:scale-105 transition-all duration-200"
                                 onClick={() =>
                                     handleSendRequest("ignored", _id)
                                 }
                             >
                                 ❌ Pass
                             </button>
+
                             <button
-                                className="btn btn-primary"
+                                className="btn btn-primary rounded-full px-8 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200"
                                 onClick={() =>
                                     handleSendRequest("interested", _id)
                                 }
