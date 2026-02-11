@@ -62,76 +62,84 @@ const Requests = () => {
             </h1>
 
             <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-8">
-                {requests.map((request) => {
-                    const {
-                        _id,
-                        firstName,
-                        lastName,
-                        age,
-                        gender,
-                        photo,
-                        about,
-                    } = request.fromId;
+                {requests
+                    .filter((request) => request.fromId)  // filter out null users
+                    .map((request) => {
+                        const {
+                            _id,
+                            firstName,
+                            lastName,
+                            age,
+                            gender,
+                            photo,
+                            about,
+                        } = request.fromId;
 
-                    return (
-                        <div
-                            key={_id}
-                            className="w-80 bg-base-200 rounded-3xl shadow-xl overflow-hidden hover:scale-105 transition-transform duration-300"
-                        >
-                            <div className="relative h-80">
-                                <img
-                                    src={photo}
-                                    alt={firstName}
-                                    className="w-full h-full object-cover"
-                                />
+                        return (
+                            <div
+                                key={_id}
+                                className="w-80 bg-base-200 rounded-3xl shadow-xl overflow-hidden hover:scale-105 transition-transform duration-300"
+                            >
+                                <div className="relative h-80">
+                                    <img
+                                        src={photo}
+                                        alt={firstName}
+                                        className="w-full h-full object-cover"
+                                    />
 
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
 
-                                <div className="absolute bottom-4 left-4 text-white">
-                                    <h2 className="text-2xl font-bold">
-                                        {firstName} {lastName}
-                                        {age && (
-                                            <span className="font-normal">
-                                                , {age}
-                                            </span>
+                                    <div className="absolute bottom-4 left-4 text-white">
+                                        <h2 className="text-2xl font-bold">
+                                            {firstName} {lastName}
+                                            {age && (
+                                                <span className="font-normal">
+                                                    , {age}
+                                                </span>
+                                            )}
+                                        </h2>
+
+                                        {gender && (
+                                            <p className="text-sm capitalize opacity-80">
+                                                {gender}
+                                            </p>
                                         )}
-                                    </h2>
+                                    </div>
+                                </div>
 
-                                    {gender && (
-                                        <p className="text-sm capitalize opacity-80">
-                                            {gender}
-                                        </p>
-                                    )}
+                                <div className="p-4 text-center">
+                                    <p className="text-sm text-gray-600 italic line-clamp-3">
+                                        {about || "No bio available"}
+                                    </p>
+                                </div>
+
+                                <div className="card-actions justify-around p-4 justify-center">
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={() =>
+                                            reviewRequest(
+                                                "accepted",
+                                                request._id,
+                                            )
+                                        }
+                                    >
+                                        ❤️ Accept
+                                    </button>
+                                    <button
+                                        className="btn btn-outline btn-error"
+                                        onClick={() =>
+                                            reviewRequest(
+                                                "rejected",
+                                                request._id,
+                                            )
+                                        }
+                                    >
+                                        ❌ Reject
+                                    </button>
                                 </div>
                             </div>
-
-                            <div className="p-4 text-center">
-                                <p className="text-sm text-gray-600 italic line-clamp-3">
-                                    {about || "No bio available"}
-                                </p>
-                            </div>
-
-                            <div className="card-actions justify-around p-4 justify-center">
-                                <button
-                                    className="btn btn-primary"
-                                    onClick={() =>
-                                        reviewRequest("accepted", request._id)
-                                    }
-                                >
-                                    ❤️ Accept
-                                </button>
-                                <button
-                                    className="btn btn-outline btn-error"
-                                    onClick={() =>
-                                        reviewRequest("rejected", request._id)
-                                    }
-                                >
-                                    ❌ Reject
-                                </button>
-                            </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
             </div>
         </div>
     );
