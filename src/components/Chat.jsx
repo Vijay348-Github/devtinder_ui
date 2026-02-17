@@ -244,78 +244,112 @@ const Chat = () => {
 
     /* -------------------- UI -------------------- */
     return (
-        <div className="h-screen bg-gradient-to-br from-[#eef2ff] via-[#f8fafc] to-[#eef2ff] flex justify-center items-center px-4">
-            <div className="w-full max-w-3xl h-[90vh] bg-white/70 backdrop-blur-xl rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-white/40">
-                {/* HEADER */}
-                <div className="shrink-0 px-6 py-4 flex items-center gap-4 bg-white/80 backdrop-blur border-b border-gray-200">
-                    {/* Avatar with online dot */}
+        <div
+            className="h-screen bg-base-100 flex justify-center items-center px-4"
+            data-theme="black"
+        >
+            <div className="w-full max-w-3xl h-[90vh] bg-base-200 border border-base-300 rounded-2xl flex flex-col overflow-hidden shadow-2xl">
+                {/* ── HEADER ── */}
+                <div className="shrink-0 px-5 py-4 flex items-center gap-4 bg-base-200 border-b border-base-300">
+                    {/* Avatar + online dot */}
                     <div className="relative">
-                        <div className="w-11 h-11 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-semibold">
-                            {receiver?.firstName?.[0]}
-                        </div>
-                        {/* ✅ Online dot on avatar */}
+                        {receiver?.photo ? (
+                            <div className="w-11 h-11 rounded-full overflow-hidden ring-2 ring-base-300">
+                                <img
+                                    src={receiver.photo}
+                                    alt={receiver.firstName}
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        ) : (
+                            <div className="w-11 h-11 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-primary font-bold text-lg">
+                                {receiver?.firstName?.[0]}
+                            </div>
+                        )}
+                        {/* Online dot */}
                         <span
-                            className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white ${
+                            className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-base-200 ${
                                 isReceiverOnline
-                                    ? "bg-emerald-500"
-                                    : "bg-gray-400"
+                                    ? "bg-success"
+                                    : "bg-base-content/20"
                             }`}
                         />
                     </div>
 
-                    <div>
-                        <h2 className="font-semibold text-lg text-gray-900">
+                    {/* Name + status */}
+                    <div className="flex-1 min-w-0">
+                        <h2 className="font-semibold text-base text-base-content truncate">
                             {receiver
                                 ? [receiver.firstName, receiver.lastName]
                                       .filter(Boolean)
                                       .join(" ")
                                 : "Chat"}
                         </h2>
-                        {/* ✅ Dynamic online/offline status text */}
                         <p
                             className={`text-xs font-medium ${
                                 isReceiverOnline
-                                    ? "text-emerald-500"
-                                    : "text-gray-400"
+                                    ? "text-success"
+                                    : "text-base-content/30"
                             }`}
                         >
                             {isReceiverOnline ? "● Online" : "● Offline"}
                         </p>
                     </div>
+
+                    {/* Header actions */}
+                    <div className="flex items-center gap-2">
+                        <div className="btn btn-ghost btn-sm btn-circle text-base-content/40 hover:text-base-content">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-5 h-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={1.8}
+                                    d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20A10 10 0 0012 2z"
+                                />
+                            </svg>
+                        </div>
+                    </div>
                 </div>
 
-                {/* MESSAGES */}
-                <div className="flex-1 overflow-y-auto px-6 py-6 space-y-5 bg-gradient-to-b from-white to-slate-50">
+                {/* ── MESSAGES ── */}
+                <div className="flex-1 overflow-y-auto px-5 py-5 space-y-4 bg-base-100 scrollbar-thin">
                     {messages.map((msg, index) => {
                         const isMe = msg.from === userId;
 
                         return (
                             <div
                                 key={index}
-                                className={`flex ${
-                                    isMe ? "justify-end" : "justify-start"
-                                }`}
+                                className={`flex ${isMe ? "justify-end" : "justify-start"}`}
                             >
                                 <div className="max-w-[70%]">
+                                    {/* Sender name (others only) */}
                                     {!isMe && msg.senderName && (
-                                        <p className="text-xs text-gray-500 mb-1 ml-1">
+                                        <p className="text-xs text-base-content/40 mb-1 ml-1">
                                             {msg.senderName}
                                         </p>
                                     )}
 
                                     <div
-                                        className={`px-4 py-3 rounded-2xl shadow-sm ${
+                                        className={`px-4 py-3 rounded-2xl ${
                                             isMe
-                                                ? "bg-gradient-to-br from-indigo-500 to-indigo-600 text-white rounded-br-md"
-                                                : "bg-white text-gray-800 rounded-bl-md border border-gray-100"
+                                                ? "bg-primary text-primary-content rounded-br-sm"
+                                                : "bg-base-200 border border-base-300 text-base-content rounded-bl-sm"
                                         }`}
                                     >
-                                        <p className="text-sm">{msg.content}</p>
-                                        <div
+                                        <p className="text-sm leading-relaxed">
+                                            {msg.content}
+                                        </p>
+                                        <p
                                             className={`text-[11px] mt-1 ${
                                                 isMe
-                                                    ? "text-white/70 text-right"
-                                                    : "text-gray-400"
+                                                    ? "text-primary-content/50 text-right"
+                                                    : "text-base-content/30"
                                             }`}
                                         >
                                             {new Date(
@@ -324,27 +358,27 @@ const Chat = () => {
                                                 hour: "2-digit",
                                                 minute: "2-digit",
                                             })}
-                                        </div>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                         );
                     })}
 
-                    {/* ✅ TYPING INDICATOR BUBBLE */}
+                    {/* ── TYPING INDICATOR ── */}
                     {isTyping && (
                         <div className="flex justify-start">
-                            <div className="bg-white text-gray-800 rounded-2xl rounded-bl-md border border-gray-100 px-4 py-3 shadow-sm flex items-center gap-1">
+                            <div className="bg-base-200 border border-base-300 rounded-2xl rounded-bl-sm px-4 py-3 flex items-center gap-1.5">
                                 <span
-                                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                                    className="w-2 h-2 bg-base-content/30 rounded-full animate-bounce"
                                     style={{ animationDelay: "0ms" }}
                                 />
                                 <span
-                                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                                    className="w-2 h-2 bg-base-content/30 rounded-full animate-bounce"
                                     style={{ animationDelay: "150ms" }}
                                 />
                                 <span
-                                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                                    className="w-2 h-2 bg-base-content/30 rounded-full animate-bounce"
                                     style={{ animationDelay: "300ms" }}
                                 />
                             </div>
@@ -354,26 +388,52 @@ const Chat = () => {
                     <div ref={messagesEndRef} />
                 </div>
 
-                {/* INPUT */}
-                <div className="shrink-0 p-4 bg-white/80 backdrop-blur border-t border-gray-200">
-                    <div className="flex items-center gap-3 bg-white rounded-full px-4 py-2 shadow-md border border-gray-200">
+                {/* ── INPUT ── */}
+                <div className="shrink-0 px-4 py-3 bg-base-200 border-t border-base-300">
+                    <div className="flex items-center gap-3 bg-base-100 border border-base-300 rounded-xl px-4 py-2.5 focus-within:border-primary transition-colors duration-200">
                         <input
                             type="text"
                             value={newMessage}
                             onChange={handleInputChange}
-                            placeholder="Type your message…"
-                            className="flex-1 bg-transparent outline-none text-sm"
+                            placeholder="Type a message…"
+                            className="flex-1 bg-transparent outline-none text-sm text-base-content placeholder:text-base-content/20"
                             onKeyDown={(e) =>
                                 e.key === "Enter" && sendMessage()
                             }
                         />
+
+                        {/* Send button */}
                         <button
                             onClick={sendMessage}
-                            className="bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2 rounded-full text-sm font-medium transition"
+                            disabled={!newMessage.trim()}
+                            className="btn btn-primary btn-sm rounded-lg px-4 h-9 min-h-0 font-semibold disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                         >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-4 h-4 mr-1"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                                />
+                            </svg>
                             Send
                         </button>
                     </div>
+
+                    {/* Enter hint */}
+                    <p className="text-center text-base-content/20 text-xs mt-1.5">
+                        Press{" "}
+                        <kbd className="kbd kbd-xs bg-base-300 border-base-content/10">
+                            Enter
+                        </kbd>{" "}
+                        to send
+                    </p>
                 </div>
             </div>
         </div>
