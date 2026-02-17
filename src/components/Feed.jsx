@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { BASE_URL } from "../utils/constants";
+import { API_BASE } from "../utils/constants";
 import { setFeed } from "../utils/feedSlice.js";
 import FeedCard from "./FeedCard.jsx";
 
@@ -12,7 +12,7 @@ const Feed = () => {
         try {
             if (feed.length > 0) return;
 
-            const response = await axios.get(`${BASE_URL}/feed`, {
+            const response = await axios.get(`${API_BASE}/feed`, {
                 withCredentials: true,
             });
             dispatch(setFeed(response.data.data));

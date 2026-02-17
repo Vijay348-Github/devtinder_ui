@@ -1,5 +1,9 @@
-// export const BASE_URL =
-//     location.hostname === "localhost" ? "http://localhost:3000" : "/api/";
+export const API_BASE =
+    location.hostname === "localhost"
+        ? "http://localhost:3000"
+        : "/api";
 
-export const BASE_URL =
-    location.hostname === "localhost" ? "http://localhost:3000" : "";
+export const SOCKET_BASE =
+    location.hostname === "localhost"
+        ? "http://localhost:3000"
+        : "";

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { socketConnection } from "../utils/socket";
 import { useSelector } from "react-redux";
-import { BASE_URL } from "../utils/constants";
+import { API_BASE } from "../utils/constants";
 import axios from "axios";
 
 const Chat = () => {
@@ -142,7 +142,7 @@ const Chat = () => {
         if (!messagetoid) return;
 
         const fetchReceiver = async () => {
-            const res = await axios.get(`${BASE_URL}/user/${messagetoid}`, {
+            const res = await axios.get(`${API_BASE}/user/${messagetoid}`, {
                 withCredentials: true,
             });
             setReceiver(res.data.user || res.data);
@@ -157,7 +157,7 @@ const Chat = () => {
 
         const fetchMessages = async () => {
             try {
-                const res = await axios.get(`${BASE_URL}/chat/${messagetoid}`, {
+                const res = await axios.get(`${API_BASE}/chat/${messagetoid}`, {
                     withCredentials: true,
                 });
 

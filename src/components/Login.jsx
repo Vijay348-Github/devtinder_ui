@@ -3,7 +3,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../utils/constants";
+import { API_BASE } from "../utils/constants";
 
 const Home = () => {
     const [email, setEmail] = useState("");
@@ -20,7 +20,7 @@ const Home = () => {
 
         try {
             const resultData = await axios.post(
-                `${BASE_URL}/login`,
+                `${API_BASE}/login`,
                 { email, password },
                 { withCredentials: true },
             );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { BASE_URL } from "../utils/constants";
+import { API_BASE } from "../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
@@ -22,7 +22,7 @@ const Signup = () => {
         try {
             setError("");
             const res = await axios.post(
-                BASE_URL + "/signup",
+                API_BASE + "/signup",
                 {
                     firstName,
                     lastName,

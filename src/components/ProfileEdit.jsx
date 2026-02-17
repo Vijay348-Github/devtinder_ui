@@ -3,7 +3,7 @@ import { useState } from "react";
 import FeedCard from "./FeedCard";
 import { useDispatch } from "react-redux";
 import axios from "axios";
-import { BASE_URL } from "../utils/constants";
+import { API_BASE } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
 
 const ProfileEdit = ({ user }) => {
@@ -20,7 +20,7 @@ const ProfileEdit = ({ user }) => {
     const handleSaveProfile = async () => {
         try {
             const res = await axios.patch(
-                BASE_URL + "/profile/edit",
+                API_BASE + "/profile/edit",
                 {
                     firstName,
                     lastName,
