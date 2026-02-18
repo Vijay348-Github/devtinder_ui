@@ -25,51 +25,87 @@ const FeedCard = ({ user, showActions = true }) => {
     const { _id, firstName, lastName, age, gender, about, photo } = user;
 
     return (
-        <div className="flex justify-center">
-            <div className="card w-[420px] bg-base-100 shadow-2xl border border-base-200 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
+        <div className="flex justify-center py-10">
+            <div className="card w-[440px] bg-base-200 border border-base-300 rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-primary/10 hover:border-primary/30">
                 {/* Image */}
-                <figure className="h-80 overflow-hidden">
+                <figure className="h-96 overflow-hidden relative">
                     <img
                         src={photo}
                         alt="Photo"
                         className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                     />
+                    {/* Gradient overlay at bottom */}
+                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-base-200 to-transparent pointer-events-none" />
                 </figure>
 
                 {/* Content */}
-                <div className="card-body items-center text-center px-8 py-6">
-                    <h2 className="text-2xl font-bold tracking-tight">
+                <div className="card-body items-center text-center px-8 py-7">
+                    {/* Name */}
+                    <h2 className="text-2xl font-bold tracking-tight text-base-content">
                         {firstName} {lastName}
                     </h2>
 
+                    {/* Age + Gender */}
                     {age && gender && (
-                        <p className="text-sm text-gray-500 font-medium">
-                            {age} · {gender}
-                        </p>
+                        <div className="flex items-center gap-2 mt-1">
+                            <span className="badge badge-sm bg-base-300 border-0 text-base-content/60 font-medium">
+                                {age} years
+                            </span>
+                            <span className="text-base-content/20">·</span>
+                            <span className="badge badge-sm bg-base-300 border-0 text-base-content/60 font-medium capitalize">
+                                {gender}
+                            </span>
+                        </div>
                     )}
 
-                    <p className="text-gray-600 mt-2 leading-relaxed">
+                    {/* About */}
+                    <p className="text-base-content/60 text-sm mt-4 leading-relaxed max-w-sm">
                         {about}
                     </p>
 
+                    {/* Actions */}
                     {showActions && (
-                        <div className="card-actions justify-center gap-6 mt-6">
+                        <div className="flex items-center gap-4 mt-7 w-full">
+                            {/* Pass button */}
                             <button
-                                className="btn btn-outline btn-error rounded-full px-8 hover:scale-105 transition-all duration-200"
+                                className="btn flex-1 bg-base-300 border-base-300 hover:bg-error/10 hover:border-error/30 hover:text-error text-base-content/50 rounded-xl h-12 font-semibold transition-all duration-200 hover:scale-105"
                                 onClick={() =>
                                     handleSendRequest("ignored", _id)
                                 }
                             >
-                                ❌ Pass
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="w-5 h-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                                Pass
                             </button>
 
+                            {/* Like button */}
                             <button
-                                className="btn btn-primary rounded-full px-8 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200"
+                                className="btn btn-primary flex-1 rounded-xl h-12 font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:scale-105 transition-all duration-200"
                                 onClick={() =>
                                     handleSendRequest("interested", _id)
                                 }
                             >
-                                ❤️ Like
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="w-5 h-5"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                </svg>
+                                Like
                             </button>
                         </div>
                     )}
